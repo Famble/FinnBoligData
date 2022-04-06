@@ -19,7 +19,7 @@ def main():
     #------Fetch money data from the ad-------
     panels = content.select('.panel')
     data = panels[1:4]
-    print(len(data[0].select('dt')))
+    #print(len(data[0].select('dt')))
     #print(data[0])
 
     ad_data = {} #Array containing all the money related values
@@ -36,7 +36,7 @@ def main():
 
     for tall in ad_data:
         ad_data[tall] = cleanCurrencyFromWeb(ad_data[tall])
-    print(ad_data)
+    #print(ad_data)
 
     #ad_data['bolig-data-head'] = data[2].dl.select('dt')
     #ad_data['bolig-data-data'] = data[2].dl.select('dd')
