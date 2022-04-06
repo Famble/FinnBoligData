@@ -25,9 +25,8 @@ def main():
     ad_data = {} #Array containing all the money related values
     ad_data['prisantydning'] = data[0].select('span')[1].next
 
+    #Looping over the needed values
     for i in range(len(data[0].select('dt'))):
-        print(i)
-        print(type(str(data[0].select('dt')[i].next).lower()))
         ad_data[str(data[0].select('dt')[i].next).lower()] = data[0].select('dd')[i].next
         #ad_data['fellesgjeld'] = data[0].select('dd')[0].next
         #ad_data['omkostninger'] = data[0].select('dd')[1].next
@@ -38,16 +37,21 @@ def main():
         ad_data[tall] = cleanCurrencyFromWeb(ad_data[tall])
     #print(ad_data)
 
-    #ad_data['bolig-data-head'] = data[2].dl.select('dt')
-    #ad_data['bolig-data-data'] = data[2].dl.select('dd')
+    
+    dimensions = content.find('dl', {'class':'definition-list definition-list--cols1to2'})
 
+    dimensions_data = {}
+    dimensions_headers = dimensions.select('dt')
+    dimensions_len = len(dimensions.select('dt'))
+    #print(dimensions.select('dt'))
 
-
-    #for i in range(len(ad_data['bolig-data-head'])):
-    #    ad_data['bolig-data-head'][i] = data[2].dl.select('dt')[i].text.strip
-    #    ad_data['bolig-data-head'][i][0] = data[2].dl.select('dd')[i].text.strip()
-
-    #print(ad_data['bolig-data-data'])
+    for i in range(dimensions_len):
+            if(str(dimensions.select('dt')[i].next).lower()=='energimerking'):
+                dimensions_data[str(dimensions.select('dt')[i].next).lower()] = dimensions.select('dd')[i].div.next.strip().replace(' -','')
+            else:
+                dimensions_data[str(dimensions.select('dt')[i].next).lower()] = dimensions.select('dd')[i].next.strip().replace(' m²','').replace(u'\xa0', u'')
+    print(dimensions_data)
+    #END--------------Main-----------------
 
 def cleanCurrencyFromWeb(data):
     return data.get_text().strip().replace(" kr","").replace(" per år","").replace(u'\xa0', u'')
